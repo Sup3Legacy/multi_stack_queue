@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2018"
 repository = "https://github.com/Sup3Legacy/multi_stack_queue"
 keywords = ["queue", "stack-allocated"]
+description = "Abstraction layer for a stack-allocated multi-queue with bounded length."
+licence = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
