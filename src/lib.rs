@@ -141,6 +141,7 @@ impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
         }
         self.try_and_push(id, value)
     }
+    // Inner `push` function
     fn try_and_push(&mut self, id: usize, value: T) -> Result<(), MSQError> {
         if self.ins[id] == self.outs[id] && !self.empty[id] {
             // Queue is full
@@ -179,6 +180,7 @@ impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
         }
         self.try_and_pop(id)
     }
+    /// Inner `pop` function
     fn try_and_pop(&mut self, id: usize) -> Result<T, MSQError> {
         if self.empty[id] {
             Err(MSQError::QueueEmpty)
@@ -192,7 +194,7 @@ impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
             Ok(res)
         }
     }
-    /// Returns whether a particular queue is empty
+    /// Returns whether a particular queue is full
     /// # Examples
     ///
     /// ```
@@ -210,6 +212,19 @@ impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
     pub fn is_full(&self, id: usize) -> bool {
         !self.empty[id] && self.ins[id] == self.outs[id]
     }
+    /// Returns whether a particular queue is empty
+    /// # Examples
+    ///
+    /// ```
+    /// use multi_stack_queue::MultiStackQueue;
+    ///
+    /// let mut msq: MultiStackQueue<usize, 4, 2> = MultiStackQueue::new();
+    ///
+    /// assert!(msq.is_empty(0));
+    /// msq.push(0, 0);
+    /// assert!(!msq.is_empty(0));
+    /// ```
+    ///
     pub fn is_empty(&self, id: usize) -> bool {
         self.empty[id]
     }
@@ -218,17 +233,21 @@ impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
 #[cfg(test)]
 mod tests {
     use crate::MultiStackQueue;
+
+    /// Simple test structure
     #[derive(Clone, Copy, Debug, PartialEq, Eq)]
     struct TestStruct {
         a: usize,
         b: bool,
     }
 
+    /// Testing the creation of a MSQ
     #[test]
     fn creation() {
         let a: MultiStackQueue<TestStruct, 16, 32> = MultiStackQueue::new();
     }
 
+    /// Testing one `push` operation
     #[test]
     fn push_once() {
         let mut a: MultiStackQueue<TestStruct, 16, 32> = MultiStackQueue::new();
@@ -236,6 +255,7 @@ mod tests {
         a.push(12, val).unwrap();
     }
 
+    /// Testing one push-pop cycle
     #[test]
     fn push_and_pop_once() {
         let mut a: MultiStackQueue<TestStruct, 16, 32> = MultiStackQueue::new();
@@ -245,6 +265,7 @@ mod tests {
         assert!(a.is_empty(12));
     }
 
+    /// Testing push-pop-pop
     #[test]
     #[should_panic]
     fn push_and_pop_twice() {
@@ -255,6 +276,7 @@ mod tests {
         a.pop(12).unwrap();
     }
 
+    /// testing a single pop operation
     #[test]
     #[should_panic]
     fn pop_empty() {
@@ -262,6 +284,7 @@ mod tests {
         a.pop(12).unwrap();
     }
 
+    /// Testing the filling of a queue
     #[test]
     fn fill() {
         let mut a: MultiStackQueue<TestStruct, 16, 32> = MultiStackQueue::new();
@@ -271,6 +294,7 @@ mod tests {
         }
     }
 
+    /// Testing the overflow of a queue
     #[test]
     #[should_panic]
     fn fill_overflow() {
@@ -281,6 +305,7 @@ mod tests {
         }
     }
 
+    /// Testing that the queue works as intended
     #[test]
     fn fifo() {
         let mut a: MultiStackQueue<usize, 16, 32> = MultiStackQueue::new();
