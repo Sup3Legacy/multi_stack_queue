@@ -1,6 +1,7 @@
 [package]
 name = "multi_stack_queue"
 version = "0.1.0"
+authors = ["Constantin Gierczak--Galle <constantin.gierczak-galle@ens.fr>"]
 edition = "2018"
 repository = "https://github.com/Sup3Legacy/multi_stack_queue"
 keywords = ["queue", "stack-allocated"]
