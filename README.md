@@ -2,7 +2,7 @@
 
 A crate for stack-allocated fixed-length multiqueues. A multiqueue is an array of a given number of queues, each able to be accessed independently.
 
-
+Based on an original idea from [Pollux3737](https://github.com/Pollux3737).
 
 # Usage
 

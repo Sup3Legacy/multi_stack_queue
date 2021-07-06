@@ -9,6 +9,8 @@
 //! Each queue holds all the threads within the same priority level.
 //! Attempting to create a new thread in an already full priority level would simply decrease its priority
 //! until a suitable non-full queue is found.
+//!
+//! Based on an original idea from [Pollux3737](https://github.com/Pollux3737).
 
 
 
