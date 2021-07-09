@@ -29,7 +29,7 @@ when working on this kind of ressource-limited target.
 ```rust
 use multi_stack_queue::MultiStackQueue;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 struct TestStruct {
     a: usize,
     b: bool,   
@@ -45,5 +45,5 @@ assert_eq!(msq.pop(7).unwrap(), value);
 
 # Roadmap
 
-* Using arrays of `Option<T>` requires that `T` implements the `Copy` trait, which may not be the case. A different approach is to use default values instead of `Option::None` to initialize the arrays. This way, `T` must need not implement `Copy` but `Default`, which may be beneficial in some usecases. Another idea would be to make use of the `MaybeUnInit` type.
-* Add options in the generic definition of `MultiStackQueue` to enable the user to specify the procedure in case of a `push` on a full queue or a `pop` on an empty queue. For instance, one could wish trying to push an element to a full queue would simply push it to the following queue (and same thing when trying to `pop` an element). This would add a sort of "spill mechanism"
+[X] Using arrays of `Option<T>` requires that `T` implements the `Copy` trait, which may not be the case. A different approach is to use default values instead of `Option::None` to initialize the arrays. This way, `T` must need not implement `Copy` but `Default`, which may be beneficial in some usecases. Another idea would be to make use of the `MaybeUnInit` type.
+[X] Add options in the generic definition of `MultiStackQueue` to enable the user to specify the procedure in case of a `push` on a full queue or a `pop` on an empty queue. For instance, one could wish trying to push an element to a full queue would simply push it to the following queue (and same thing when trying to `pop` an element). This would add a sort of "spill mechanism"

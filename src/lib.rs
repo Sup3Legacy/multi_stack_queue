@@ -12,7 +12,7 @@
 //!
 //! Based on an original idea from [Pollux3737](https://github.com/Pollux3737).
 
-
+use std::mem::MaybeUninit;
 
 /// Errors that may be encountered during use of the [`MultiStackQueue`]
 ///
@@ -73,14 +73,6 @@ pub enum MSQError {
 /// assert_eq!(msq.pop(7).unwrap(), value);
 /// ```
 ///
-/// # Roadmap
-///
-/// Using arrays of `Option<T>` requires that `T` implements the `Copy` trait, which may not be the case.
-/// A different approach is to use default values instead of `Option::None` to initialize the arrays.
-/// This way, `T` must need not implement `Copy` but `Default`, which may be beneficial in some usecases.
-///
-/// Another idea would be to make use of the `MaybeUnInit` type.
-///
 pub struct MultiStackQueue<T, const N: usize, const M: usize> {
     data: [[Option<T>; N]; M],
     ins: [usize; M],
@@ -88,7 +80,7 @@ pub struct MultiStackQueue<T, const N: usize, const M: usize> {
     empty: [bool; M],
 }
 
-impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
+impl<T, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
     /// Returns a new empty multiqueue.
     ///
     /// # Examples
@@ -110,8 +102,9 @@ impl<T: Copy, const N: usize, const M: usize> MultiStackQueue<T, N, M> {
     /// ```
     ///
     pub fn new() -> Self {
+        let d: [[Option<T>; N]; M] = unsafe { MaybeUninit::uninit().assume_init() };
         MultiStackQueue {
-            data: [[None; N]; M],
+            data: d,
             ins: [0usize; M],
             outs: [0usize; M],
             empty: [true; M],
